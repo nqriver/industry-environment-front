@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import CountrySelector from './components/CountrySelector';
+import DatasetChart from "./components/DatasetChart";
+import HubSelector from "./components/HubSelector";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [selectedHub, setSelectedHub] = useState(null);
+
+    return (
+        <div>
+            <CountrySelector onCountrySelect={setSelectedCountry}/>
+            {selectedCountry && <HubSelector countryId={selectedCountry.id} onHubSelect={setSelectedHub}/>}
+            {selectedHub && <DatasetChart hubId={selectedHub.value}/>}
+
+        </div>
+    );
 }
 
 export default App;
