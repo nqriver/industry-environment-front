@@ -7,16 +7,16 @@ const api = axios.create({
 
 // Mapa kodów błędów
 const errorCodes = {
-    "BMS01": "Dostęp do tego browaru jest zabroniony",
-    "BMS02": "Nie można znaleźć browaru",
-    "BMS03": "Użytkownik z wybranym adresem email już istnieje",
-    "BMS04": "Użytkownik z wybranym loginem już istnieje",
-    "BMS05": "Nie można znaleźć menadżera",
-    "BMS06": "Ten browar nie jest zarządzany przez wybranego menadżera",
-    "BM07": "Nie można znaleźć stylu piwa",
-    "BM08": "Nie można znaleźć piwa",
-    "BMS09": "To piwo jest już produkowane przez ten browar",
-    "BSM10" : "To piwo nie jest produkowane przez wybrany browar"
+    "BMS01": "Zewnętrzna usługa internetowa odpowiedziała kodem 4xx",
+    "BMS02": "Zewnętrzna usługa internetowa odpowiedziała kodem 5xx",
+    "BMS03": "Zakres dat może rozpoczynać się od 1940 roku, a data początkowa powinna być wcześniejsza niż data końcowa",
+    "BMS04": "Nie można znaleźć kraju",
+    "BMS05": "Nie można znaleźć centrum przemysłu",
+    "BSM06": "Usługa API pogodowego zwróciła niespójną liczbę pomiarów minimalnej i maksymalnej temperatury",
+    "BSM07": "Kombinacja atrybutów tego zestawu danych jest nieznana/niedozwolona",
+    "BMS08": "Użytkownik z wybranym adresem email już istnieje",
+    "BMS09": "Użytkownik z wybranym loginem już istnieje",
+    "BMS10": "Nie można znaleźć użytkownika"
 };
 
 api.interceptors.request.use((config) => {

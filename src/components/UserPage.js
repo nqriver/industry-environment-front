@@ -48,7 +48,7 @@ const UserPage = () => {
     return (
         <Container className="text-center">
             <h2>Profil</h2>
-            {error && <Alert variant="danger">{error.message}</Alert>}
+            {error && <Alert variant="danger">{error}</Alert>}
             <p>Imię: {user.name}</p>
             <p>Login: {user.login}</p>
             <p>Email: {user.email}</p>
