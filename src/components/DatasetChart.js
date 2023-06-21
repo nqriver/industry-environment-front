@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import api from "../services/api";
-import { Button, Form, Col, Row } from 'react-bootstrap';
+import { Button, Form, Col, Row, Alert } from 'react-bootstrap';
 
 function DatasetChart({ hubId, onExportData }) {
     const [startYear, setStartYear] = useState("");
@@ -9,7 +9,6 @@ function DatasetChart({ hubId, onExportData }) {
     const [chartType, setChartType] = useState("");
     const [dataset, setDataset] = useState({ records: [] });
 
-    // Find min and max values for both Weather Value and Production Index
     const weatherValues = dataset.records.map(record => record.weatherValue);
     const productionValues = dataset.records.map(record => record.productionIndex);
     const weatherMin = Math.min(...weatherValues);
@@ -27,6 +26,8 @@ function DatasetChart({ hubId, onExportData }) {
             .catch(error => console.error(error));
         }
       };
+
+
 
     const options = {
         chart: {
@@ -55,11 +56,22 @@ function DatasetChart({ hubId, onExportData }) {
                 opposite: true,
                 min: weatherMin,
                 max: weatherMax,
+                decimalsInFloat: 2,
+                labels: {
+                    formatter: function (val) {
+                        return val.toFixed(2) + "°C"
+                    }
+                }
             },
             {
                 seriesName: 'Production Index',
                 min: productionMin,
                 max: productionMax,
+                labels: {
+                    formatter: function (val) {
+                        return val.toFixed(2) + " IDX_2015"
+                    }
+                }
             }
         ],
         tooltip: {
@@ -88,6 +100,18 @@ function DatasetChart({ hubId, onExportData }) {
         }
     ];
 
+    const isInputValid = () => {
+        if (!startYear || !endYear) {
+            return false;
+        }
+
+        if (startYear < 1950 || endYear > 2022) {
+            return false;
+        }
+
+        return !(startYear > endYear);
+    }
+
     return (
         <Form>
             <Form.Group as={Row}>
@@ -96,8 +120,11 @@ function DatasetChart({ hubId, onExportData }) {
                 </Form.Label>
                 <Col sm="10">
                     <Form.Control
+                        type="number"
+                        min={1950}
+                        max={2022}
                         value={startYear}
-                        onChange={e => setStartYear(e.target.value)}
+                        onChange={e => setStartYear(parseInt(e.target.value))}
                     />
                 </Col>
             </Form.Group>
@@ -107,9 +134,13 @@ function DatasetChart({ hubId, onExportData }) {
                 </Form.Label>
                 <Col sm="10">
                     <Form.Control
+                        type="number"
+                        min={1950}
+                        max={2022}
                         value={endYear}
-                        onChange={e => setEndYear(e.target.value)}
+                        onChange={e => setEndYear(parseInt(e.target.value))}
                     />
+                    {!isInputValid() && <Alert variant="info" className="mt-2">Upewnij się że data początkowa jest większa od 1940 a data końcowa mniejsza od 2022, sprawdź również czy data końcowa jest większa od daty początkowej</Alert>}
                 </Col>
             </Form.Group>
             <Form.Group as={Row}>
@@ -130,7 +161,7 @@ function DatasetChart({ hubId, onExportData }) {
                     </Form.Control>
                 </Col>
             </Form.Group>
-            <Button onClick={generatePlot}>Generuj wykres</Button>
+            <Button onClick={generatePlot} disabled={!isInputValid()}>Generuj wykres</Button>
             <div>
                 <Chart options={options} series={series} type="line" height={350} />
             </div>

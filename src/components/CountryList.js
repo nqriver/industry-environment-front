@@ -49,7 +49,7 @@ const CountryList = () => {
                 <Col md="auto">
                     <ListGroup>
                         {countries.map(country => (
-                            <ListGroup.Item key={country.id} className="mb-3" style={{ borderRadius: '15px', width: '24rem' }}>
+                            <ListGroup.Item key={country.id} className="mb-6" style={{ borderRadius: '15px', width: '24rem' }}>
                                 <Card>
                                     <Card.Body>
                                         <Card.Title>{country.name}</Card.Title>
