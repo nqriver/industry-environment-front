@@ -26,9 +26,8 @@ const NavBar = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="justify-content-center" style={{flex: 1}}>
                         <Nav.Link as={Link} to="/countries">Kraje G7</Nav.Link>
-                        <Nav.Link as={Link} to="/hubs">Ośrodki przemysłowe</Nav.Link>
                         <Nav.Link as={Link} to="/charts">Wykresy</Nav.Link>
-                        <Nav.Link as={Link} to="/users">Użytkownik</Nav.Link>
+                        <Nav.Link as={Link} to="/user">Użytkownik</Nav.Link>
                     </Nav>
                     <Navbar.Text className="justify-content-end">
                         Witaj {username} <FaUser/>

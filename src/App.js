@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import CountrySelector from './components/CountrySelector';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import RegisterPage from "./components/RegisterPage";
 import Logout from "./components/Logout";
@@ -9,6 +8,7 @@ import HomePage from "./components/HomePage";
 import NavBar from "./components/NavBar";
 import ChartPage from "./components/ChartPage";
 import CountryList from "./components/CountryList";
+import UserPage from "./components/UserPage";
 
 
 function App() {
@@ -33,7 +33,6 @@ function App() {
                 setIsLoggedIn(true);
             }
         } else {
-            // Brak tokena
             setIsLoggedIn(false);
         }
     };
@@ -70,6 +69,12 @@ function App() {
                     <>
                         <NavBar/>
                         <CountryList/>
+                    </>
+                }/>
+                <Route path="/user" element={
+                    <>
+                        <NavBar/>
+                        <UserPage/>
                     </>
                 }/>
             </Routes>

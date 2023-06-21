@@ -26,7 +26,7 @@ function HubSelector({countryId, onHubSelect}) {
 
     return (
         <Form.Group controlId="hubSelect">
-            <Form.Label>Wybierz Hub</Form.Label>
+            <Form.Label>Wybierz okręg przemysłowy</Form.Label>
             <Select
                 options={hubs}
                 onChange={handleHubChange}

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState} from 'react';
 import Chart from 'react-apexcharts';
 import api from "../services/api";
-import { Button, Form, Col, Row, Alert } from 'react-bootstrap';
+import {Alert, Button, Col, Form, Row} from 'react-bootstrap';
 
-function DatasetChart({ hubId, onExportData }) {
+function DatasetChart({hubId, onExportData}) {
     const [startYear, setStartYear] = useState("");
     const [endYear, setEndYear] = useState("");
     const [chartType, setChartType] = useState("");
-    const [dataset, setDataset] = useState({ records: [] });
+    const [dataset, setDataset] = useState({records: []});
 
     const weatherValues = dataset.records.map(record => record.weatherValue);
     const productionValues = dataset.records.map(record => record.productionIndex);
@@ -18,15 +18,14 @@ function DatasetChart({ hubId, onExportData }) {
 
     const generatePlot = () => {
         if (hubId && startYear && endYear && chartType) {
-          api.get(`/datasets/${hubId}?begin=${startYear}&end=${endYear}&type=${chartType}`)
-            .then(response => {
-              setDataset(response.data);
-              onExportData(response.data); // Przekazanie danych do ChartPage
-            })
-            .catch(error => console.error(error));
+            api.get(`/datasets/${hubId}?begin=${startYear}&end=${endYear}&type=${chartType}`)
+                .then(response => {
+                    setDataset(response.data);
+                    onExportData(response.data); // Przekazanie danych do ChartPage
+                })
+                .catch(error => console.error(error));
         }
-      };
-
+    };
 
 
     const options = {
@@ -140,7 +139,10 @@ function DatasetChart({ hubId, onExportData }) {
                         value={endYear}
                         onChange={e => setEndYear(parseInt(e.target.value))}
                     />
-                    {!isInputValid() && <Alert variant="info" className="mt-2">Upewnij się że data początkowa jest większa od 1940 a data końcowa mniejsza od 2022, sprawdź również czy data końcowa jest większa od daty początkowej</Alert>}
+                    {!isInputValid() &&
+                        <Alert variant="info" className="mt-2">Upewnij się że data początkowa jest większa od 1940 a
+                            data końcowa mniejsza od 2022, sprawdź również czy data końcowa jest większa od daty
+                            początkowej</Alert>}
                 </Col>
             </Form.Group>
             <Form.Group as={Row}>
@@ -154,18 +156,27 @@ function DatasetChart({ hubId, onExportData }) {
                         onChange={e => setChartType(e.target.value)}
                     >
                         <option value="">Wybierz typ wykresu</option>
-                        <option value="PRODUCTION_IDX_AND_AVG_DAILY_TEMP">Wskaźnik produkcji i średnia dzienna temperatura</option>
-                        <option value="PRODUCTION_IDX_AND_AVG_MAX_DAILY_TEMP">Wskaźnik produkcji i średnia maksymalna dzienna temperatura</option>
-                        <option value="PRODUCTION_IDX_AND_AVG_MIN_DAILY_TEMP">Wskaźnik produkcji i średnia minimalna dzienna temperatura</option>
-                        <option value="PRODUCTION_IDX_AND_AVG_DAILY_AMPLITUDE">Wskaźnik produkcji i średnia amplituda dzienna</option>
+                        <option value="PRODUCTION_IDX_AND_AVG_DAILY_TEMP">Wskaźnik produkcji i średnia dzienna
+                            temperatura
+                        </option>
+                        <option value="PRODUCTION_IDX_AND_AVG_MAX_DAILY_TEMP">Wskaźnik produkcji i średnia maksymalna
+                            dzienna temperatura
+                        </option>
+                        <option value="PRODUCTION_IDX_AND_AVG_MIN_DAILY_TEMP">Wskaźnik produkcji i średnia minimalna
+                            dzienna temperatura
+                        </option>
+                        <option value="PRODUCTION_IDX_AND_AVG_DAILY_AMPLITUDE">Wskaźnik produkcji i średnia amplituda
+                            dzienna
+                        </option>
                     </Form.Control>
                 </Col>
             </Form.Group>
             <Button onClick={generatePlot} disabled={!isInputValid()}>Generuj wykres</Button>
             <div>
-                <Chart options={options} series={series} type="line" height={350} />
+                <Chart options={options} series={series} type="line" height={350}/>
             </div>
         </Form>
     );
 }
+
 export default DatasetChart;

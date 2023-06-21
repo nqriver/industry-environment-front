@@ -37,7 +37,7 @@ const LoginPage = ({ onLogin }) => {
                 <Col md="auto">
                     <Card className="p-4">
                         <Card.Body>
-                            <Card.Title className="text-center mb-4">Zaloguj się do systemu Browara Koniczynka</Card.Title>
+                            <Card.Title className="text-center mb-4">Zaloguj się</Card.Title>
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group controlId="formLogin">
                                     <Form.Label>Login</Form.Label>
