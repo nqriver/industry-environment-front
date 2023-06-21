@@ -2,13 +2,14 @@ import React, {useEffect, useState} from 'react';
 import HubSelector from './HubSelector';
 import CountrySelector from './CountrySelector';
 import DatasetChart from './DatasetChart';
-import {Button, Container} from 'react-bootstrap';
+import {Button, Container, Alert} from 'react-bootstrap';
 import api from "../services/api";
 
 function ChartPage() {
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [selectedHub, setSelectedHub] = useState(null);
     const [exportedData, setExportedData] = useState(null);
+    const [error, setError] = useState(null);
     const [startYear, setStartYear] = useState("");
     const [endYear, setEndYear] = useState("");
     const [chartType, setChartType] = useState("");
@@ -31,7 +32,10 @@ function ChartPage() {
                     link.download = fileName;
                     link.click();
                 })
-                .catch(error => console.error(error));
+                .catch(error => {
+                    setError(error)
+                    console.error(error)
+                });
         }
     };
 
@@ -67,6 +71,8 @@ function ChartPage() {
                     <Button variant="warning" className="ml-2" onClick={handleExportDataJson}>Eksportuj dane w JSON</Button>
                 </>
             )}
+            {error && <Alert variant="danger">{error}</Alert>}
+
         </Container>
     );
 }

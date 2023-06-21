@@ -8,6 +8,8 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
     const [endYear, setEndYear] = useState("");
     const [chartType, setChartType] = useState("");
     const [dataset, setDataset] = useState({ records: [] });
+    const [error, setError] = useState(null);
+
 
     const weatherValues = dataset.records.map(record => record.weatherValue);
     const productionValues = dataset.records.map(record => record.productionIndex);
@@ -26,7 +28,10 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
                     onEndYear(endYear);
                     onChartType(chartType);
                 })
-                .catch(error => console.error(error));
+                .catch(error => {
+                    setError(error)
+                    console.error(error)
+                });
         }
     };
 
@@ -114,7 +119,9 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
     }
 
     return (
+
         <Form>
+            {error && <Alert variant="danger">{error}</Alert>}
             <Form.Group as={Row}>
                 <Form.Label column sm="2">
                     Rok początkowy:
@@ -177,6 +184,8 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
             <div>
                 <Chart options={options} series={series} type="line" height={350}/>
             </div>
+
+
         </Form>
     );
 }

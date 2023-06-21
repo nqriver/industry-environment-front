@@ -39,6 +39,9 @@ api.interceptors.response.use(
             }
             return Promise.reject('Niepoprawne dane uwierzytelniające');
         }
+        if (error.response.status === 403) {
+            return Promise.reject('Nie jesteś uprawniony do wykonania tej operacji');
+        }
         if (error.response.data && error.response.data.code) {
             return Promise.reject(errorCodes[error.response.data.code] || error.response.data.message);
         }
