@@ -1,0 +1,18 @@
+.home-container {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    margin-bottom: 20px;
+    transition: transform .2s;
+}
+
+
+.content {
+    width: 80%;
+}
