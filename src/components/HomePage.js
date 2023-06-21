@@ -6,7 +6,8 @@ const HomePage = () => {
     return (
         <div className="home-container">
             <div className="content">
-                <h1 className="text-center mb-4">Integracja</h1>
+                <h1 className="text-center mb-4">Projekt Integracja Systemów</h1>
+                <h2 className="text-center mb-4">Zestawienie danych rozwoju przemysłu z historycznymi pomiarami warunków atmosferycznych w krajach grupy G7 w latach 1950-2022</h2>
                 <div className="row">
                     <div className="col-md-6">
                         <div className="card text-center">
