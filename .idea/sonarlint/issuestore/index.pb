@@ -9,7 +9,5 @@ K
 src/styles/RegisterPage.css,9\b\9b55d458de29c9833b724dbac9feffe29a969819
 H
 src/components/Logout.js,7\d\7d8aec032ed605f43e22ecbcd16ac88b0c314286
-C
-src/services/api.js,f\b\fbbdd259a63c246e936c6ea7d2be5c47f0a9da60
 <
 package.json,7\0\7030d0b2f71b999ff89a343de08c414af32fc93a

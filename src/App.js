@@ -8,6 +8,7 @@ import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import NavBar from "./components/NavBar";
 import ChartPage from "./components/ChartPage";
+import CountryList from "./components/CountryList";
 
 
 function App() {
@@ -63,6 +64,12 @@ function App() {
                     <>
                         <NavBar/>
                         <ChartPage/>
+                    </>
+                }/>
+                <Route path="/countries" element={
+                    <>
+                        <NavBar/>
+                        <CountryList/>
                     </>
                 }/>
             </Routes>
