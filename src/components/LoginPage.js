@@ -18,7 +18,7 @@ const LoginPage = ({ onLogin }) => {
         try {
             await login(loginData);
             onLogin();
-            navigate('/countries'); // przekierowanie po udanym zalogowaniu
+            navigate('/charts'); // przekierowanie po udanym zalogowaniu
         } catch (err) {
             setError(err); // Ustawienie błędu w stanie
         }

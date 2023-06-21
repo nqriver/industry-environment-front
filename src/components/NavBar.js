@@ -2,9 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Container, Nav, Navbar} from 'react-bootstrap';
 import jwtDecode from 'jwt-decode';
-import {GiBeerBottle} from 'react-icons/gi';
-import {FaUser} from 'react-icons/fa';
+import {FaIndustry, FaUser} from 'react-icons/fa';
 import {FiLogOut} from "react-icons/fi";
+
 
 const NavBar = () => {
     let username = "";
@@ -19,8 +19,9 @@ const NavBar = () => {
         <Navbar bg="dark" expand="lg" variant="dark"> {/* Add fixed="top" */}
             <Container>
                 <Navbar.Brand as={Link} to="/">
-                    <GiBeerBottle/> Zestawienie danych rozwoju przemysłu i zmian środowiska w państwach grupy G7
+                    <FaIndustry/>Grupa G7
                 </Navbar.Brand>
+
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="justify-content-center" style={{flex: 1}}>

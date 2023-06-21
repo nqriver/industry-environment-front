@@ -7,11 +7,10 @@ import jwtDecode from "jwt-decode";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import NavBar from "./components/NavBar";
+import ChartPage from "./components/ChartPage";
 
 
 function App() {
-    const [selectedCountry, setSelectedCountry] = useState(null);
-    const [selectedHub, setSelectedHub] = useState(null);
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -53,17 +52,18 @@ function App() {
                 <Route path="/logout" element={<Logout onLogout={handleLogout}/>}/>
                 <Route path="/login" element={<LoginPage onLogin={handleLogin}/>}/>
                 <Route path="/register" element={<RegisterPage onRegistration={handleLogin}/>}/>
-                {/*<Route path="/breweries" element={<BreweriesPage/>}/>*/}
-                <Route path="/" element={isLoggedIn ?                     <>
-                    <NavBar/>
-                    <CountrySelector onCountrySelect={setSelectedCountry}/>
-                </> : <HomePage/>}/>
-
-                <Route path="/countries" element={
+                <Route path="/" element={isLoggedIn ?
                     <>
-                    <NavBar/>
-                    <CountrySelector onCountrySelect={setSelectedCountry}/>
-                </>
+                        <NavBar/>
+                        <ChartPage/>
+                    </> : <HomePage/>}/>
+
+
+                <Route path="/charts" element={
+                    <>
+                        <NavBar/>
+                        <ChartPage/>
+                    </>
                 }/>
             </Routes>
         </Router>

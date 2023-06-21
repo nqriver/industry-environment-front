@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import api from "../services/api";
 
-function HubSelector({ countryId, onHubSelect }) {
+import {Form} from 'react-bootstrap';
+
+function HubSelector({countryId, onHubSelect}) {
     const [hubs, setHubs] = useState([]);
 
     useEffect(() => {
         api.get(`/countries/${countryId}/hubs`)
             .then(res => {
-                const hubs = res.data.map(hub => ({ value: hub.id, label: hub.hubName }));
+                const hubs = res.data.map(hub => ({value: hub.id, label: hub.hubName}));
                 setHubs(hubs);
             })
             .catch(error => {
@@ -23,13 +25,13 @@ function HubSelector({ countryId, onHubSelect }) {
 
 
     return (
-        <div>
-            <h2>Select a Hub</h2>
+        <Form.Group controlId="hubSelect">
+            <Form.Label>Wybierz Hub</Form.Label>
             <Select
                 options={hubs}
                 onChange={handleHubChange}
             />
-        </div>
+        </Form.Group>
     );
 }
 

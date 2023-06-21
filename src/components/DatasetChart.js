@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import api from "../services/api";
+import { Button, Form, Col, Row } from 'react-bootstrap';
 
 function DatasetChart({ hubId }) {
     const [startYear, setStartYear] = useState("");
@@ -85,31 +86,52 @@ function DatasetChart({ hubId }) {
     ];
 
     return (
-        <div>
-            <label>
-                Start Year:
-                <input value={startYear} onChange={e => setStartYear(e.target.value)} />
-            </label>
-            <label>
-                End Year:
-                <input value={endYear} onChange={e => setEndYear(e.target.value)} />
-            </label>
-            <label>
-                Chart Type:
-                <select value={chartType} onChange={e => setChartType(e.target.value)}>
-                    <option value="">Select chart type</option>
-                    <option value="PRODUCTION_IDX_AND_AVG_DAILY_TEMP">Production Index and Average Daily Temp</option>
-                    <option value="PRODUCTION_IDX_AND_AVG_MAX_DAILY_TEMP">Production Index and Average Max Daily Temp</option>
-                    <option value="PRODUCTION_IDX_AND_AVG_MIN_DAILY_TEMP">Production Index and Average Min Daily Temp</option>
-                    <option value="PRODUCTION_IDX_AND_AVG_DAILY_AMPLITUDE">Production Index and Average Daily Amplitude</option>
-                </select>
-            </label>
-            <button onClick={generatePlot}>Generate Plot</button>
+        <Form>
+            <Form.Group as={Row}>
+                <Form.Label column sm="2">
+                    Rok początkowy:
+                </Form.Label>
+                <Col sm="10">
+                    <Form.Control
+                        value={startYear}
+                        onChange={e => setStartYear(e.target.value)}
+                    />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+                <Form.Label column sm="2">
+                    Rok końcowy:
+                </Form.Label>
+                <Col sm="10">
+                    <Form.Control
+                        value={endYear}
+                        onChange={e => setEndYear(e.target.value)}
+                    />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row}>
+                <Form.Label column sm="2">
+                    Typ wykresu:
+                </Form.Label>
+                <Col sm="10">
+                    <Form.Control
+                        as="select"
+                        value={chartType}
+                        onChange={e => setChartType(e.target.value)}
+                    >
+                        <option value="">Wybierz typ wykresu</option>
+                        <option value="PRODUCTION_IDX_AND_AVG_DAILY_TEMP">Wskaźnik produkcji i średnia dzienna temperatura</option>
+                        <option value="PRODUCTION_IDX_AND_AVG_MAX_DAILY_TEMP">Wskaźnik produkcji i średnia maksymalna dzienna temperatura</option>
+                        <option value="PRODUCTION_IDX_AND_AVG_MIN_DAILY_TEMP">Wskaźnik produkcji i średnia minimalna dzienna temperatura</option>
+                        <option value="PRODUCTION_IDX_AND_AVG_DAILY_AMPLITUDE">Wskaźnik produkcji i średnia amplituda dzienna</option>
+                    </Form.Control>
+                </Col>
+            </Form.Group>
+            <Button onClick={generatePlot}>Generuj wykres</Button>
             <div>
                 <Chart options={options} series={series} type="line" height={350} />
             </div>
-        </div>
+        </Form>
     );
 }
-
 export default DatasetChart;
