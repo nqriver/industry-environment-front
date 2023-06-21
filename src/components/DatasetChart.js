@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
 import api from "../services/api";
-import {Alert, Button, Col, Form, Row} from 'react-bootstrap';
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 
-function DatasetChart({hubId, onExportData}) {
+function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType }) {
     const [startYear, setStartYear] = useState("");
     const [endYear, setEndYear] = useState("");
     const [chartType, setChartType] = useState("");
-    const [dataset, setDataset] = useState({records: []});
+    const [dataset, setDataset] = useState({ records: [] });
 
     const weatherValues = dataset.records.map(record => record.weatherValue);
     const productionValues = dataset.records.map(record => record.productionIndex);
@@ -21,12 +21,14 @@ function DatasetChart({hubId, onExportData}) {
             api.get(`/datasets/${hubId}?begin=${startYear}&end=${endYear}&type=${chartType}`)
                 .then(response => {
                     setDataset(response.data);
-                    onExportData(response.data); // Przekazanie danych do ChartPage
+                    onExportData(response.data);
+                    onStartYear(startYear);
+                    onEndYear(endYear);
+                    onChartType(chartType);
                 })
                 .catch(error => console.error(error));
         }
     };
-
 
     const options = {
         chart: {

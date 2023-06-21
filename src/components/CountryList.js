@@ -77,7 +77,7 @@ const CountryList = () => {
                             <ListGroup.Item key={hub.id}>
                                 <h5>{hub.hubName}</h5>
                                 <p>
-                                    Główne miasto w pobliżu: {hub.mainCityNearby} <br />
+                                    Główne miasto: {hub.mainCityNearby} <br />
                                     Populacja: {hub.population} <br />
                                     PKB per capita: {hub.gdpPerCapita} <br />
                                     Szerokość geograficzna: {hub.latitude} <br />
