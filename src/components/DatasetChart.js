@@ -3,7 +3,7 @@ import Chart from 'react-apexcharts';
 import api from "../services/api";
 import { Button, Form, Col, Row } from 'react-bootstrap';
 
-function DatasetChart({ hubId }) {
+function DatasetChart({ hubId, onExportData }) {
     const [startYear, setStartYear] = useState("");
     const [endYear, setEndYear] = useState("");
     const [chartType, setChartType] = useState("");
@@ -19,11 +19,14 @@ function DatasetChart({ hubId }) {
 
     const generatePlot = () => {
         if (hubId && startYear && endYear && chartType) {
-            api.get(`/datasets/${hubId}?begin=${startYear}&end=${endYear}&type=${chartType}`)
-                .then(response => setDataset(response.data))
-                .catch(error => console.error(error));
+          api.get(`/datasets/${hubId}?begin=${startYear}&end=${endYear}&type=${chartType}`)
+            .then(response => {
+              setDataset(response.data);
+              onExportData(response.data); // Przekazanie danych do ChartPage
+            })
+            .catch(error => console.error(error));
         }
-    };
+      };
 
     const options = {
         chart: {
