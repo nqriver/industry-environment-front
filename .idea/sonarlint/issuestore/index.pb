@@ -11,7 +11,5 @@ H
 src/components/Logout.js,7\d\7d8aec032ed605f43e22ecbcd16ac88b0c314286
 C
 src/services/api.js,f\b\fbbdd259a63c246e936c6ea7d2be5c47f0a9da60
-K
-src/services/authService.js,3\3\3315be405170635511599ef976b4cfd4b2f3d304
 <
 package.json,7\0\7030d0b2f71b999ff89a343de08c414af32fc93a

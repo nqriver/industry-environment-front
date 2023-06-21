@@ -16,7 +16,7 @@ export const logout = () => {
 
 const register = async (registerData) => {
     try {
-        const response = await api.post('/managers/register', registerData);
+        const response = await api.post('/users/register', registerData);
         localStorage.setItem('jwt', response.data.jwt.jwt);
         return response.data;
     } catch (error) {
