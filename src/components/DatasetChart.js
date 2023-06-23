@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Chart from 'react-apexcharts';
 import api from "../services/api";
-import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
-import { linearRegression, linearRegressionLine } from 'simple-statistics';
+import {Alert, Button, Col, Form, Row} from 'react-bootstrap';
+import {linearRegression, linearRegressionLine} from 'simple-statistics';
 
-function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType }) {
+function DatasetChart({hubId, onExportData, onStartYear, onEndYear, onChartType}) {
     const [isTrendLine, setIsTrendLine] = useState(false);
     const [startYear, setStartYear] = useState("");
     const [endYear, setEndYear] = useState("");
     const [chartType, setChartType] = useState("");
-    const [dataset, setDataset] = useState({ records: [] });
+    const [dataset, setDataset] = useState({records: []});
     const [error, setError] = useState(null);
+    const [isBarChart, setIsBarChart] = useState(false);
 
 
     const weatherValues = dataset.records.map(record => record.weatherValue);
     const productionValues = dataset.records.map(record => record.productionIndex);
-    const weatherMin = Math.min(...weatherValues);
-    const weatherMax = Math.max(...weatherValues);
-    const productionMin = Math.min(...productionValues);
-    const productionMax = Math.max(...productionValues);
+    const weatherMin = 0.8 * Math.min(...weatherValues);
+    const weatherMax = 1.2 * Math.max(...weatherValues);
+    const productionMin = 0.8 * Math.min(...productionValues);
+    const productionMax = 1.2 * Math.max(...productionValues);
 
     const weatherData = dataset.records.map(record => [record.year, record.weatherValue]);
     const productionData = dataset.records.map(record => [record.year, record.productionIndex]);
@@ -52,7 +53,7 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
     const series = [
         {
             name: getWeatherValue(chartType),
-            type: 'line',
+            type: isBarChart ? 'bar' : 'line',
             data: isTrendLine ? weatherTrendData : weatherData,
         },
         {
@@ -61,6 +62,7 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
             data: isTrendLine ? productionTrendData : productionData,
         }
     ];
+
 
     const generatePlot = () => {
         if (hubId && startYear && endYear && chartType) {
@@ -97,8 +99,8 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
             size: isTrendLine ? 0 : 5,
         },
         title: {
-            text: dataset.type,
-            align: 'left'
+            text: dataset.type === undefined ? '' : dataset.type + startYear + ' - ' + endYear,
+            align: 'center'
         },
         yaxis: [
             {
@@ -233,12 +235,31 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
                         type="switch"
                         id="trend-line-switch"
                         checked={isTrendLine}
-                        onChange={e => setIsTrendLine(e.target.checked)}
+                        onChange={e => {
+                            setIsTrendLine(e.target.checked)
+                            setIsBarChart(false)
+                        }}
                     />
 
                 </Col>
             </Form.Group>
 
+            <Form.Group as={Row}>
+                <Form.Label column sm="2">
+                    Pokaż wartość pogodową na wykresie słupkowym:
+                </Form.Label>
+                <Col sm="10">
+                    <Form.Check
+                        type="switch"
+                        id="bar-chart-switch"
+                        checked={isBarChart}
+                        onChange={e => {
+                            setIsBarChart(e.target.checked)
+                            setIsTrendLine(false)
+                        }}
+                    />
+                </Col>
+            </Form.Group>
 
             <Button onClick={generatePlot} disabled={!isInputValid()}>Generuj wykres</Button>
             <div>
