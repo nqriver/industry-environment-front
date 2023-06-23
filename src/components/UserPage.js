@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Form, Alert, Container } from 'react-bootstrap';
+import { Button, Modal, Form, Alert, Container, Table, Card } from 'react-bootstrap';
 import jwt_decode from 'jwt-decode';
 import api from '../services/api';
 
@@ -37,6 +37,7 @@ const UserPage = () => {
             .put(`/users/${user.id}`, updatedUser)
             .then((response) => {
                 setUser(response.data);
+                setError(null)
                 handleClose();
             })
             .catch((error) => {
@@ -49,14 +50,37 @@ const UserPage = () => {
         <Container className="text-center">
             <h2>Profil</h2>
             {error && <Alert variant="danger">{error}</Alert>}
-            <p>Imię: {user.name}</p>
-            <p>Login: {user.login}</p>
-            <p>Email: {user.email}</p>
-            <p>Numer telefonu: {user.phoneNumber}</p>
-            <p>Rola: {user.role}</p>
-            <Button variant="primary" onClick={handleShow}>
-                Edytuj
-            </Button>
+            <Card>
+                <Card.Body>
+                    <Table responsive>
+                        <tbody>
+                        <tr>
+                            <th>Imię:</th>
+                            <td>{user.name}</td>
+                        </tr>
+                        <tr>
+                            <th>Login:</th>
+                            <td>{user.login}</td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>{user.email}</td>
+                        </tr>
+                        <tr>
+                            <th>Numer telefonu:</th>
+                            <td>{user.phoneNumber}</td>
+                        </tr>
+                        <tr>
+                            <th>Rola:</th>
+                            <td>{user.role}</td>
+                        </tr>
+                        </tbody>
+                    </Table>
+                    <Button variant="primary" onClick={handleShow}>
+                        Edytuj
+                    </Button>
+                </Card.Body>
+            </Card>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -111,7 +135,6 @@ const UserPage = () => {
                 </Modal.Body>
             </Modal>
         </Container>
-    );
-};
+    );};
 
 export default UserPage;
