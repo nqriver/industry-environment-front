@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
 import api from "../services/api";
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
+import { linearRegression, linearRegressionLine } from 'simple-statistics';
 
 function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType }) {
+    const [isTrendLine, setIsTrendLine] = useState(false);
     const [startYear, setStartYear] = useState("");
     const [endYear, setEndYear] = useState("");
     const [chartType, setChartType] = useState("");
@@ -17,6 +19,48 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
     const weatherMax = Math.max(...weatherValues);
     const productionMin = Math.min(...productionValues);
     const productionMax = Math.max(...productionValues);
+
+    const weatherData = dataset.records.map(record => [record.year, record.weatherValue]);
+    const productionData = dataset.records.map(record => [record.year, record.productionIndex]);
+
+    let weatherTrendData = [], productionTrendData = [];
+    if (isTrendLine) {
+        const weatherTrend = linearRegression(weatherData);
+        const weatherTrendline = linearRegressionLine(weatherTrend);
+        weatherTrendData = weatherData.map(datum => [datum[0], weatherTrendline(datum[0])]);
+
+        const productionTrend = linearRegression(productionData);
+        const productionTrendline = linearRegressionLine(productionTrend);
+        productionTrendData = productionData.map(datum => [datum[0], productionTrendline(datum[0])]);
+    }
+
+    const getWeatherValue = (chartType) => {
+        switch (chartType) {
+            case "PRODUCTION_IDX_AND_AVG_DAILY_TEMP":
+                return "Średnia dzienna temperatura";
+            case "PRODUCTION_IDX_AND_AVG_MAX_DAILY_TEMP":
+                return "Średnia maksymalna dzienna temperatura";
+            case "PRODUCTION_IDX_AND_AVG_MIN_DAILY_TEMP":
+                return "Średnia minimalna dzienna temperatura";
+            case "PRODUCTION_IDX_AND_AVG_DAILY_AMPLITUDE":
+                return "Średnia amplituda dzienna";
+            default:
+                return "Nieznana wartość pogodowa";
+        }
+    }
+
+    const series = [
+        {
+            name: getWeatherValue(chartType),
+            type: 'line',
+            data: isTrendLine ? weatherTrendData : weatherData,
+        },
+        {
+            name: 'Indeks rozwoju produkcji przemysłowej',
+            type: 'line',
+            data: isTrendLine ? productionTrendData : productionData,
+        }
+    ];
 
     const generatePlot = () => {
         if (hubId && startYear && endYear && chartType) {
@@ -50,7 +94,7 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
             enabled: false
         },
         markers: {
-            size: 0,
+            size: isTrendLine ? 0 : 5,
         },
         title: {
             text: dataset.type,
@@ -65,8 +109,15 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
                 decimalsInFloat: 2,
                 labels: {
                     formatter: function (val) {
-                        return val.toFixed(2) + "°C"
-                    }
+                        return val.toFixed(2)
+                    },
+                    show: true,
+                    showAlways: false,
+
+                },
+                title: {
+                    text: '°C',
+                    rotate: 0
                 }
             },
             {
@@ -75,8 +126,13 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
                 max: productionMax,
                 labels: {
                     formatter: function (val) {
-                        return val.toFixed(2) + " IDX_2015"
-                    }
+                        return val.toFixed(2)
+                    },
+                    show: true,
+                    showAlways: false
+                },
+                title: {
+                    text: 'IDX_2015'
                 }
             }
         ],
@@ -93,19 +149,6 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
         }
     };
 
-    const series = [
-        {
-            name: 'Weather Value',
-            type: 'line',
-            data: dataset.records.map(record => [record.year, record.weatherValue])
-        },
-        {
-            name: 'Production Index',
-            type: 'line',
-            data: dataset.records.map(record => [record.year, record.productionIndex])
-        }
-    ];
-
     const isInputValid = () => {
         if (!startYear || !endYear) {
             return false;
@@ -115,7 +158,7 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
             return false;
         }
 
-        return !(startYear > endYear);
+        return !(startYear >= endYear);
     }
 
     return (
@@ -180,6 +223,23 @@ function DatasetChart({ hubId, onExportData, onStartYear, onEndYear, onChartType
                     </Form.Control>
                 </Col>
             </Form.Group>
+
+            <Form.Group as={Row}>
+                <Form.Label column sm="2">
+                    Pokaż linię trendu:
+                </Form.Label>
+                <Col sm="10">
+                    <Form.Check
+                        type="switch"
+                        id="trend-line-switch"
+                        checked={isTrendLine}
+                        onChange={e => setIsTrendLine(e.target.checked)}
+                    />
+
+                </Col>
+            </Form.Group>
+
+
             <Button onClick={generatePlot} disabled={!isInputValid()}>Generuj wykres</Button>
             <div>
                 <Chart options={options} series={series} type="line" height={350}/>
